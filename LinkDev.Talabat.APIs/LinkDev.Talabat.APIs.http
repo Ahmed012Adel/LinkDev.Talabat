@@ -1,0 +1,10 @@
+@LinkDev.Talabat.APIs_HostAddress = https://localhost:7029
+
+GET {{LinkDev.Talabat.APIs_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{LinkDev.Talabat.APIs_HostAddress}}/api/weatherforecast
+
+###
