@@ -1,0 +1,7 @@
+// Document & Testing APIs - Via .Http File
+
+@HostAddress = https://localhost:7029
+
+GET {{HostAddress}}/api/weatherforecast
+
+###
