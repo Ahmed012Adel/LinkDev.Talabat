@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Migration
+namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Migrations
 {
     [DbContext(typeof(StoreDbContxt))]
-    [Migration("20241006153240_ProductModuleMigration")]
+    [Migration("20241006160811_ProductModuleMigration")]
     partial class ProductModuleMigration
     {
         /// <inheritdoc />

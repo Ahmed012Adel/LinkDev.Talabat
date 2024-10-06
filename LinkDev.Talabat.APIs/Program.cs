@@ -9,7 +9,7 @@ namespace LinkDev.Talabat.APIs
     // ASP.Net Core Web APIs - Project Struceture
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var webApplicationBuilder = WebApplication.CreateBuilder(args);
             
@@ -27,6 +27,34 @@ namespace LinkDev.Talabat.APIs
             #endregion
 
             var app = webApplicationBuilder.Build();
+           
+            #region Apply Migrations(Update Database)
+
+            using var scope = app.Services.CreateAsyncScope();
+            var service = scope.ServiceProvider;
+            var dbcontext = service.GetRequiredService<StoreDbContxt>();
+
+
+            var LoggerFactory = service.GetRequiredService<ILoggerFactory>();
+
+            try
+            {
+                var pendingMigration = dbcontext.Database.GetPendingMigrations();
+
+                if (pendingMigration.Any())
+                {
+                    await dbcontext.Database.MigrateAsync();
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                var logger = LoggerFactory.CreateLogger<Program>();
+                logger.LogError(string.Empty, "An Error during Migrate");
+            }
+
+            #endregion
 
             #region Configure Kestral Middleware
 

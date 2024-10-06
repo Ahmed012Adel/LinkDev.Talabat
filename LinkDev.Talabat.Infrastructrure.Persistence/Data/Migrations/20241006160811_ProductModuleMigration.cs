@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Migration
+namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Migrations
 {
     /// <inheritdoc />
     public partial class ProductModuleMigration : Migration
