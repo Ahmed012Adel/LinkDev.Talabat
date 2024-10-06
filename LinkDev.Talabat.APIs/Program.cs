@@ -1,6 +1,7 @@
 
 using LinkDev.Talabat.Infrastructrure.Persistence;
 using LinkDev.Talabat.Infrastructrure.Persistence.Data;
+using LinkDev.Talabat.Infrastructrure.Persistence.Data.Seeds;
 using Microsoft.EntityFrameworkCore;
 
 namespace LinkDev.Talabat.APIs
@@ -46,6 +47,7 @@ namespace LinkDev.Talabat.APIs
                     await dbcontext.Database.MigrateAsync();
                 }
 
+                await StoreContextSeed.SeedAsync(dbcontext);
 
             }
             catch (Exception ex)
