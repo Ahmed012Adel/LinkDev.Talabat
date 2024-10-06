@@ -9,10 +9,12 @@ namespace LinkDev.Talabat.Core.Domain.Contracts
 {
     public interface IUniteOfWork : IAsyncDisposable
     {
-        public IGenericRepositeries<Product,int> ProductRepositery { get;  }
-        public IGenericRepositeries<ProductBrand,int> BrandRepositery { get; }
-        public IGenericRepositeries<ProductCategory,int> CategoryRepositery { get;  }
-    
+
+        IGenericRepositeries<TEntity, Tkey> GetRepoitery<TEntity, Tkey>()
+            where TEntity : BaseEntity<Tkey>
+            where Tkey : IEquatable<Tkey>;
+
+
         Task ComplateAsync();
     }
 }

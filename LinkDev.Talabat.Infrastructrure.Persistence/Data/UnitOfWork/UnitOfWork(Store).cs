@@ -1,7 +1,9 @@
-﻿using LinkDev.Talabat.Core.Domain.Contracts;
+﻿using LinkDev.Talabat.Core.Domain.Common;
+using LinkDev.Talabat.Core.Domain.Contracts;
 using LinkDev.Talabat.Core.Domain.Entities.Product;
 using LinkDev.Talabat.Infrastructrure.Persistence.Data.Repositeries;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,28 +14,33 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.UnitOfWork
     public class UnitOfWork_Store_ : IUniteOfWork
     {
         private readonly StoreDbContxt dbContxt;
-        private readonly Lazy<IGenericRepositeries<Product, int>> _ProductRepositeries;
-        private readonly Lazy<IGenericRepositeries<ProductBrand, int>> _brandRepositeries;
-        private readonly Lazy<IGenericRepositeries<ProductCategory, int>> _categoryRepositeries;
+
+        private readonly ConcurrentDictionary<string, object> _repositry;
+
 
         public UnitOfWork_Store_(StoreDbContxt dbContxt)
         {
-            this.dbContxt = dbContxt;
-            _ProductRepositeries = new Lazy<IGenericRepositeries<Product, int>>(() => new GenericRepositeries<Product, int>(dbContxt));
-            _brandRepositeries = new Lazy<IGenericRepositeries<ProductBrand, int>>(() => new GenericRepositeries<ProductBrand, int>(dbContxt));
-            _categoryRepositeries = new Lazy<IGenericRepositeries<ProductCategory, int>>(() => new GenericRepositeries<ProductCategory, int>(dbContxt));
+            this.dbContxt = dbContxt; 
+            _repositry = new ();
         }
-        public IGenericRepositeries<Product, int> ProductRepositery => _ProductRepositeries.Value;
-        public IGenericRepositeries<ProductBrand, int> BrandRepositery => _brandRepositeries.Value;
-            public IGenericRepositeries<ProductCategory, int> CategoryRepositery => _categoryRepositeries.Value;
-        public Task ComplateAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task ComplateAsync()
+          => await dbContxt.SaveChangesAsync();
 
-        public ValueTask DisposeAsync()
+        public async ValueTask DisposeAsync() => await dbContxt.DisposeAsync();
+
+        public IGenericRepositeries<TEntity, Tkey> GetRepoitery<TEntity, Tkey>()
+            where TEntity : BaseEntity<Tkey>
+            where Tkey : IEquatable<Tkey>
         {
-            throw new NotImplementedException();
+            /// var TypeName = typeof(TEntity).Name;
+            /// if (_repositry.ContainsKey(TypeName)) return (IGenericRepositeries<TEntity, Tkey>) _repositry[TypeName];
+            /// 
+            /// var repositry = new GenericRepositeries<TEntity, Tkey>(dbContxt);
+            /// _repositry.Add(TypeName, repositry);
+            /// 
+            /// return repositry;
+
+            return (IGenericRepositeries<TEntity, Tkey>) _repositry.GetOrAdd(typeof(TEntity).Name, new GenericRepositeries<TEntity, Tkey>(dbContxt));
         }
     }
 }
