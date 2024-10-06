@@ -1,4 +1,6 @@
 
+using LinkDev.Talabat.APIs.Extention;
+using LinkDev.Talabat.Core.Domain.Contracts;
 using LinkDev.Talabat.Infrastructrure.Persistence;
 using LinkDev.Talabat.Infrastructrure.Persistence.Data;
 using LinkDev.Talabat.Infrastructrure.Persistence.Data.Seeds;
@@ -28,33 +30,10 @@ namespace LinkDev.Talabat.APIs
             #endregion
 
             var app = webApplicationBuilder.Build();
-           
-            #region Apply Migrations(Update Database)
 
-            using var scope = app.Services.CreateAsyncScope();
-            var service = scope.ServiceProvider;
-            var dbcontext = service.GetRequiredService<StoreDbContxt>();
+            #region Database Intializer
 
-
-            var LoggerFactory = service.GetRequiredService<ILoggerFactory>();
-
-            try
-            {
-                var pendingMigration = dbcontext.Database.GetPendingMigrations();
-
-                if (pendingMigration.Any())
-                {
-                    await dbcontext.Database.MigrateAsync();
-                }
-
-                await StoreContextSeed.SeedAsync(dbcontext);
-
-            }
-            catch (Exception ex)
-            {
-                var logger = LoggerFactory.CreateLogger<Program>();
-                logger.LogError(string.Empty, "An Error during Migrate");
-            }
+            await app.IntializerStoreContextAsync(); 
 
             #endregion
 

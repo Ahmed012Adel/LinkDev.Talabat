@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LinkDev.Talabat.Core.Domain\LinkDev.Talabat.Core.Domain.csproj" />
     <ProjectReference Include="..\LinkDev.Talabat.Infrastructrure.Persistence\LinkDev.Talabat.Infrastructrure.Persistence.csproj" />
   </ItemGroup>
 
