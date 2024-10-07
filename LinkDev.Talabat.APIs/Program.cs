@@ -1,5 +1,7 @@
 
 using LinkDev.Talabat.APIs.Extention;
+using LinkDev.Talabat.APIs.Services;
+using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Core.Domain.Contracts;
 using LinkDev.Talabat.Infrastructrure.Persistence;
 using LinkDev.Talabat.Infrastructrure.Persistence.Data;
@@ -25,6 +27,7 @@ namespace LinkDev.Talabat.APIs
             webApplicationBuilder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
             webApplicationBuilder.Services.AddPersistenceService(webApplicationBuilder.Configuration);
 
+            webApplicationBuilder.Services.AddScoped(typeof(ILoggedUserInService), typeof(LoggedUserInService));
             
 
             #endregion

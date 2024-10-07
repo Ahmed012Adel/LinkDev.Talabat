@@ -29,7 +29,7 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.UnitOfWork
         public async ValueTask DisposeAsync() => await dbContxt.DisposeAsync();
 
         public IGenericRepositeries<TEntity, Tkey> GetRepoitery<TEntity, Tkey>()
-            where TEntity : BaseEntity<Tkey>
+            where TEntity : BaseAuditableEntity<Tkey>
             where Tkey : IEquatable<Tkey>
         {
             /// var TypeName = typeof(TEntity).Name;

@@ -3,7 +3,7 @@
 namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Config.Base
 {
     internal class BaseEntityConfiguration<TEntity, TKey> : IEntityTypeConfiguration<TEntity>
-        where TEntity : BaseEntity<TKey>
+        where TEntity : BaseAuditableEntity<TKey>
         where TKey : IEquatable<TKey>
     {
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)

@@ -11,7 +11,7 @@ namespace LinkDev.Talabat.Core.Domain.Contracts
     {
 
         IGenericRepositeries<TEntity, Tkey> GetRepoitery<TEntity, Tkey>()
-            where TEntity : BaseEntity<Tkey>
+            where TEntity : BaseAuditableEntity<Tkey>
             where Tkey : IEquatable<Tkey>;
 
 
