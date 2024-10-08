@@ -13,26 +13,38 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Repositeries
         where TEntity : BaseAuditableEntity<TKey>
         where TKey : IEquatable<TKey>
     {
+
         public async Task<IEnumerable<TEntity>> GetAllAsync(bool withTracking = false)
         {
 
             //if (typeof(TEntity) == typeof(Product))
             //{
-            //    withTracking? await dbContxt.Set<Product>().Include(p => p.Category).Include(P => P.Brand).ToListAsync() :
-            //        await dbContxt.Set<Product>().Include(p => p.Category).Include(P => P.Brand).AsNoTracking().ToListAsync();
+            //   return (IEnumerable<TEntity>) (withTracking? await dbContxt.Set<Product>().Include(p => p.Category).Include(P => P.Brand).ToListAsync() :
+            //        await dbContxt.Set<Product>().Include(p => p.Category).Include(P => P.Brand).AsNoTracking().ToListAsync());
             //}
 
-             return withTracking? await dbContxt.Set<TEntity>().ToListAsync() : 
+            return withTracking? await dbContxt.Set<TEntity>().ToListAsync() : 
                 await dbContxt.Set<TEntity>().AsNoTracking().ToListAsync();
         }
 
         public async Task<TEntity?> GetAsync(TKey id)
         {
             //if (typeof(TEntity) == typeof(Product))
-            //    return await dbContxt.Set<Product>().Include(p => p.Category).Include(P => P.Brand).FirstOrDefaultAsync(p=>p.Id = (int)id);
+            //    return (TEntity)(await dbContxt.Set<Product>().Include(p => p.Category).Include(p => p.Brand).FirstOrDefaultAsync(P=>P.Id == id));
 
             return await dbContxt.Set<TEntity>().FindAsync();
         }
+
+        public async Task<IEnumerable<TEntity>> GetWithSpecAllAsync(ISpecification<TEntity, TKey> spec, bool withTracking = false)
+        {
+            return await ApplyQuery(spec).ToListAsync();
+        }
+
+        public async Task<TEntity?> GetWithSpecAsync(ISpecification<TEntity, TKey> spec)
+        {
+            return await ApplyQuery(spec).FirstOrDefaultAsync();
+        }
+
 
         public async Task AddAsync(TEntity entity)
             => await dbContxt.Set<TEntity>().AddAsync(entity); 
@@ -43,5 +55,15 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Repositeries
         public void Delete(TEntity entity)
           => dbContxt.Set<TEntity>().Remove(entity);
 
+
+
+        #region Helpers
+        private IQueryable<TEntity> ApplyQuery( ISpecification<TEntity, TKey> spec)
+        {
+            return SpecificationEvaluter<TEntity, TKey>.GetQuery(dbContxt.Set<TEntity>(),spec);
+        }
+
+
+        #endregion
     }
 }
