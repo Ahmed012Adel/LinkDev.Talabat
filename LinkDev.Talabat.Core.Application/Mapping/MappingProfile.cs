@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace LinkDev.Talabat.Core.Application.Mapping
 {
@@ -16,8 +17,10 @@ namespace LinkDev.Talabat.Core.Application.Mapping
             CreateMap<ProductBrand, BrandDto>();
             CreateMap<ProductCategory, CategoryDto>();
             CreateMap<Product, ProductToReturnDto>()
-                .ForMember(d=>d.Brand,o=>o.MapFrom(s=>s.Brand.Name))
-                .ForMember(d=>d.Category,o=>o.MapFrom(s=>s.Category.Name));
+                .ForMember(d=>d.Brand,o=>o.MapFrom(s=>s.Brand!.Name))
+                .ForMember(d=>d.Category,o=>o.MapFrom(s=>s.Category!.Name))
+                //.ForMember(d=>d.PictureUrl , o=>o.MapFrom(s => $"{"https://localhost:7029"}/{s.PictureUrl}"))
+                .ForMember(d=>d.PictureUrl , o => o.MapFrom<ProudctUrlResolver>());
         }
     }
 }
