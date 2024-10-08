@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using LinkDev.Talabat.Core.Application.Mapping;
+using LinkDev.Talabat.Core.Application.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,11 @@ namespace LinkDev.Talabat.Core.Application.Abstraction
     {
         public static IServiceCollection AddApplicationService(this IServiceCollection service) 
         {
+
+            service.AddAutoMapper(typeof(MappingProfile)/*.Assembly || M => M.AddProfile<MappingProfile>*/);
+
+            service.AddScoped(typeof(IServiceManager), typeof(ServiceManager));
+
             return service;
         }
     }
