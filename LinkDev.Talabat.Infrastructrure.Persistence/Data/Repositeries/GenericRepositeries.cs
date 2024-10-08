@@ -1,5 +1,6 @@
 ﻿using LinkDev.Talabat.Core.Domain.Common;
 using LinkDev.Talabat.Core.Domain.Contracts;
+using LinkDev.Talabat.Core.Domain.Entities.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,25 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Repositeries
         where TKey : IEquatable<TKey>
     {
         public async Task<IEnumerable<TEntity>> GetAllAsync(bool withTracking = false)
-         =>  withTracking ? await dbContxt.Set<TEntity>().ToListAsync() : await dbContxt.Set<TEntity>().AsNoTracking().ToListAsync();
+        {
+
+            //if (typeof(TEntity) == typeof(Product))
+            //{
+            //    withTracking? await dbContxt.Set<Product>().Include(p => p.Category).Include(P => P.Brand).ToListAsync() :
+            //        await dbContxt.Set<Product>().Include(p => p.Category).Include(P => P.Brand).AsNoTracking().ToListAsync();
+            //}
+
+             return withTracking? await dbContxt.Set<TEntity>().ToListAsync() : 
+                await dbContxt.Set<TEntity>().AsNoTracking().ToListAsync();
+        }
 
         public async Task<TEntity?> GetAsync(TKey id)
-               =>  await dbContxt.Set<TEntity>().FindAsync();
+        {
+            //if (typeof(TEntity) == typeof(Product))
+            //    return await dbContxt.Set<Product>().Include(p => p.Category).Include(P => P.Brand).FirstOrDefaultAsync(p=>p.Id = (int)id);
+
+            return await dbContxt.Set<TEntity>().FindAsync();
+        }
 
         public async Task AddAsync(TEntity entity)
             => await dbContxt.Set<TEntity>().AddAsync(entity); 
