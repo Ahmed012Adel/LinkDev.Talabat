@@ -32,6 +32,8 @@ namespace LinkDev.Talabat.APIs
             webApplicationBuilder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
             webApplicationBuilder.Services.AddPersistenceService(webApplicationBuilder.Configuration);
             webApplicationBuilder.Services.AddApplicationService();
+
+            webApplicationBuilder.Services.AddHttpContextAccessor();
             webApplicationBuilder.Services.AddScoped(typeof(ILoggedUserInService), typeof(LoggedUserInService));
 
             //webApplicationBuilder.Services.AddScoped(typeof(ILoggedUserInService), typeof(LoggedUserInService));

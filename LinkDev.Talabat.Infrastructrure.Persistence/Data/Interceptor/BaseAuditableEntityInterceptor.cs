@@ -33,19 +33,17 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Interceptor
 
             var UTC = DateTime.UtcNow;
 
-            foreach(var Entry in dbContext.ChangeTracker.Entries<BaseAuditableEntity<int>>())
+            foreach(var Entry in dbContext.ChangeTracker.Entries<BaseAuditableEntity<int>>()
+                .Where(Entery => Entery.State is EntityState.Added or EntityState.Modified))
             {
-                if(Entry is {State: EntityState.Added or EntityState.Modified })
+                if(Entry.State is EntityState.Added  )
                 {
-                    if(Entry.State == EntityState.Added)
-                    {
-                        Entry.Entity.CreatedBy = "";
+                    Entry.Entity.CreatedBy = _loggedUserInService.UserId;
                         Entry.Entity.CreatedOn = UTC;
-                    }
-
-                    Entry.Entity.LastModifiedBy = "";
-                    Entry.Entity.LastModifiedOn = UTC;
+                    
                 } 
+                    Entry.Entity.LastModifiedBy = _loggedUserInService.UserId;
+                    Entry.Entity.LastModifiedOn = UTC;
             }
         }
     }
