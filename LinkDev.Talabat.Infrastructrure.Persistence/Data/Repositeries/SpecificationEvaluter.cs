@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Repositeries
 {
     internal static class SpecificationEvaluter<TEntity, TKey>
-        where TEntity : BaseAuditableEntity<TKey>
+        where TEntity : BaseEntity<TKey>
         where TKey : IEquatable<TKey>
     {
         public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> InputQuery , ISpecification<TEntity,TKey> Spec)

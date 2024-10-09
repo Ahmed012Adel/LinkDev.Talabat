@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Repositeries
 {
     public class GenericRepositeries<TEntity, TKey>(StoreDbContxt dbContxt) : IGenericRepositeries<TEntity, TKey>
-        where TEntity : BaseAuditableEntity<TKey>
+        where TEntity : BaseEntity<TKey>
         where TKey : IEquatable<TKey>
     {
 
