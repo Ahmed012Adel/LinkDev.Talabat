@@ -14,6 +14,7 @@ namespace LinkDev.Talabat.Core.Application.Abstraction
         public static IServiceCollection AddApplicationService(this IServiceCollection service) 
         {
 
+            //service.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
             service.AddAutoMapper(typeof(MappingProfile)/*.Assembly || M => M.AddProfile<MappingProfile>*/);
 
             service.AddScoped(typeof(IServiceManager), typeof(ServiceManager));
