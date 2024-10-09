@@ -23,7 +23,7 @@ namespace LinkDev.Talabat.APIs
 
             webApplicationBuilder.Services
                 .AddControllers()
-                .AddApplicationPart(typeof(Apis.Controller.AssemblyInformationApi).Assembly);
+                .AddApplicationPart(typeof(AssemblyInformationApi).Assembly);
 
             // Add services to the container.
 
