@@ -29,8 +29,8 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Repositeries
 
         public async Task<TEntity?> GetAsync(TKey id)
         {
-            //if (typeof(TEntity) == typeof(Product))
-            //    return (TEntity)(await dbContxt.Set<Product>().Include(p => p.Category).Include(p => p.Brand).FirstOrDefaultAsync(P=>P.Id == id));
+            if (typeof(TEntity) == typeof(Product))
+                return (TEntity)(await dbContxt.Set<Product>().Where(P => P.Id.Equals(id)).Include(p => p.Category).Include(p => p.Brand).FirstOrDefaultAsync() as TEntity;
 
             return await dbContxt.Set<TEntity>().FindAsync();
         }
