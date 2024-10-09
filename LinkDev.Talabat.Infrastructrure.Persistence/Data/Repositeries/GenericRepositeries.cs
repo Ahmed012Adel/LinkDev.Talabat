@@ -17,11 +17,11 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Repositeries
         public async Task<IEnumerable<TEntity>> GetAllAsync(bool withTracking = false)
         {
 
-            if (typeof(TEntity) == typeof(Product))
-            {
-                return (IEnumerable<TEntity>)(withTracking ? await dbContxt.Set<Product>().Include(p => p.Category).Include(P => P.Brand).ToListAsync() :
-                     await dbContxt.Set<Product>().Include(p => p.Category).Include(P => P.Brand).AsNoTracking().ToListAsync());
-            }
+            //if (typeof(TEntity) == typeof(Product))
+            //{
+            //    return (IEnumerable<TEntity>)(withTracking ? await dbContxt.Set<Product>().Include(p => p.Category).Include(P => P.Brand).ToListAsync() :
+            //         await dbContxt.Set<Product>().Include(p => p.Category).Include(P => P.Brand).AsNoTracking().ToListAsync());
+            //}
 
             return withTracking ? await dbContxt.Set<TEntity>().ToListAsync() : 
                 await dbContxt.Set<TEntity>().AsNoTracking().ToListAsync();
@@ -29,8 +29,8 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Repositeries
 
         public async Task<TEntity?> GetAsync(TKey id)
         {
-            if (typeof(TEntity) == typeof(Product))
-                return (TEntity)(await dbContxt.Set<Product>().Where(P => P.Id.Equals(id)).Include(p => p.Category).Include(p => p.Brand).FirstOrDefaultAsync() as TEntity;
+            //    if (typeof(TEntity) == typeof(Product))
+            //        return (TEntity)(await dbContxt.Set<Product>().Where(P => P.Id.Equals(id)).Include(p => p.Category).Include(p => p.Brand).FirstOrDefaultAsync() as TEntity;
 
             return await dbContxt.Set<TEntity>().FindAsync();
         }
