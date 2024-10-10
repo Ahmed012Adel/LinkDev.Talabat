@@ -14,9 +14,9 @@ namespace LinkDev.Talabat.Core.Application.Services.Product
             var spec = new ProductWithBarndAndCategoriesSpecification(id);
             return mapper.Map<ProductToReturnDto>(await uniteOfWork.GetRepoitery<Core.Domain.Entities.Product.Product, int>().GetWithSpecAsync(spec));
         }
-        public async Task<IEnumerable<ProductToReturnDto>> GetProductsAsync()
+        public async Task<IEnumerable<ProductToReturnDto>> GetProductsAsync(string? Sort)
         {
-            var spec = new ProductWithBarndAndCategoriesSpecification();
+            var spec = new ProductWithBarndAndCategoriesSpecification(Sort);
 
             return mapper.Map<IEnumerable<ProductToReturnDto>>(await uniteOfWork.GetRepoitery<Domain.Entities.Product.Product, int>().GetWithSpecAllAsync(spec));
         }

@@ -14,9 +14,9 @@ namespace LinkDev.Talabat.Apis.Controller.Controllers.Product
     {
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProductsAsync()
+        public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProductsAsync(string? Sort)
         {
-            var Product = await serviceManager.ProductService.GetProductsAsync();
+            var Product = await serviceManager.ProductService.GetProductsAsync(Sort);
             return Ok(Product);
         }
         
