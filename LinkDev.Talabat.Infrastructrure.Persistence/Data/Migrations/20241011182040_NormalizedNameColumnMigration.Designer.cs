@@ -4,6 +4,7 @@ using LinkDev.Talabat.Infrastructrure.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Migrations
 {
     [DbContext(typeof(StoreDbContxt))]
-    partial class StoreDbContxtModelSnapshot : ModelSnapshot
+    [Migration("20241011182040_NormalizedNameColumnMigration")]
+    partial class NormalizedNameColumnMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
