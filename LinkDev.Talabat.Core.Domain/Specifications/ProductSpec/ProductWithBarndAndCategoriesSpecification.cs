@@ -9,15 +9,23 @@ namespace LinkDev.Talabat.Core.Domain.Specifications.ProductSpec
 {
     public class ProductWithBarndAndCategoriesSpecification : BaseSpecificatins<Product , int>
     {
-        public ProductWithBarndAndCategoriesSpecification(string? Sort) :base()
+        public ProductWithBarndAndCategoriesSpecification(string? Sort, int? BrandId, int? CategoryId,int PageSize,int PageIndex) :
+            base(
+                
+                p=>
+                (!BrandId.HasValue || BrandId.Value == p.BrandId)
+                &&
+                (!CategoryId.HasValue || CategoryId.Value == p.CategoryId)
+
+                )
         {
             AddIncludes();
-
             AddOrderBy(P => P.Name);
+            
             if (!string.IsNullOrWhiteSpace(Sort))
             {
-                switch(Sort)
-                    {
+                switch (Sort)
+                {
                     case "nameDesc":
                         AddOrderByDesc(p => p.Name);
                         break;
@@ -32,13 +40,13 @@ namespace LinkDev.Talabat.Core.Domain.Specifications.ProductSpec
                         break;
                 }
             }
-        }
 
+            AddPagination(PageSize * (PageIndex - 1), PageSize);
+        }
         public ProductWithBarndAndCategoriesSpecification(int id):base(id)
         {
             AddIncludes();
         }
-
         private protected override void AddIncludes()
         {
             base.AddIncludes();
@@ -46,5 +54,6 @@ namespace LinkDev.Talabat.Core.Domain.Specifications.ProductSpec
             Includes.Add(P => P.Category!);
             Includes.Add(p => p.Brand!);
         }
+
     }
 }
