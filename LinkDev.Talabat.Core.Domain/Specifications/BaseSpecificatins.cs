@@ -20,6 +20,11 @@ namespace LinkDev.Talabat.Core.Domain.Specifications
         public int Take { get ; set ; }
         public bool IsPaginationPage { get; set ; }
 
+        public BaseSpecificatins()
+        {
+
+        }
+
         public BaseSpecificatins(Expression<Func<TEntity, bool>>? expression)
         {
             Criteria = expression;

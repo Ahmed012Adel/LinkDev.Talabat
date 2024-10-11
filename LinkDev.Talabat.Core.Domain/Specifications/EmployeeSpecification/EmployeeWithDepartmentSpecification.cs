@@ -9,11 +9,7 @@ namespace LinkDev.Talabat.Core.Domain.Specifications.EmployeeSpecification
 {
     public class EmployeeWithDepartmentSpecification :BaseSpecificatins<Employee ,int>
     {
-        public EmployeeWithDepartmentSpecification(int? DepartmentId):base
-            (
-            
-            E=>E.DepartmentId == DepartmentId
-            )
+        public EmployeeWithDepartmentSpecification():base()
         {
             Includes.Add(E => E.department!);
         }
