@@ -19,6 +19,16 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Repositeries
             if(Spec.Criteria is not null)
                  Query = Query.Where(Spec.Criteria);
 
+            if(Spec.OrderByDesc is not null) 
+                Query = Query.OrderByDescending(Spec.OrderByDesc);
+            else if(Spec.OrderBy is not null)
+                Query = Query.OrderBy(Spec.OrderBy);
+
+
+            if (Spec.IsPaginationPage)
+            {
+                Query=Query.Skip(Spec.Skip).Take(Spec.Take);
+            }
             Query = Spec.Includes.Aggregate(Query , (CurrentQuery , include) => CurrentQuery.Include(include)); 
 
             return Query;

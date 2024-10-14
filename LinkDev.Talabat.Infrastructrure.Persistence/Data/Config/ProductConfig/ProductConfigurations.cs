@@ -10,7 +10,12 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Config.ProductConfig
             base.Configure(builder);
 
             builder.Property(P=>P.Name)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(P=>P.NormalizedName)
+                .IsRequired()
+                .HasMaxLength(100);
 
             builder.Property(P=>P.Description)
                 .IsRequired();

@@ -27,7 +27,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Employees
 
         public async Task<IEnumerable<EmployeeToReturnDto>> GetEmployeesAsync()
         {
-            var spec = new EmployeeWithDepartmentSpecification();
+            var spec = new EmployeeWithDepartmentSpecification(5);
             
             var Employees = await uniteOfWork.GetRepoitery<Employee,int>().GetWithSpecAllAsync(spec);
 
