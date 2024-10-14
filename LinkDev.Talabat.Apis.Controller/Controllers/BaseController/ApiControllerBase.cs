@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace LinkDev.Talabat.Apis.Controller.Controllers.BaseController
 {
     [ApiController]
-    [Route("Api/Controller")]
+    [Route("Api/[Controller]")]
     public class ApiControllerBase : ControllerBase
     {
     }
