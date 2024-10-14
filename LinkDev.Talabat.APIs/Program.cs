@@ -8,6 +8,8 @@ using LinkDev.Talabat.Infrastructrure.Persistence.Data.Seeds;
 using Microsoft.EntityFrameworkCore;
 using LinkDev.Talabat.Apis.Controller;
 using LinkDev.Talabat.APIs.Services;
+using Microsoft.AspNetCore.Mvc;
+using LinkDev.Talabat.Apis.Controller.Error;
 
 namespace LinkDev.Talabat.APIs
 {
@@ -23,6 +25,17 @@ namespace LinkDev.Talabat.APIs
 
             webApplicationBuilder.Services
                 .AddControllers()
+                .ConfigureApiBehaviorOptions(option =>
+                {
+                    option.SuppressModelStateInvalidFilter = false;
+                    option.InvalidModelStateResponseFactory = (actionContext) =>
+                    {
+                        var errors = actionContext.ModelState.Where(p => p.Value!.Errors.Count > 0)
+                                                             .SelectMany(E => E.Value!.Errors)
+                                                             .Select(E => E.ErrorMessage);
+                        return new BadRequestObjectResult(new ApiValidationErrorResponse() {Errors = errors });
+                    };
+                })
                 .AddApplicationPart(typeof(AssemblyInformationApi).Assembly);
 
             // Add services to the container.
@@ -60,6 +73,8 @@ namespace LinkDev.Talabat.APIs
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseStaticFiles();
             app.MapControllers(); 
 
