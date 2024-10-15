@@ -34,7 +34,7 @@ namespace LinkDev.Talabat.Core.Application.Abstraction
                 var configuration = serviceProvider.GetRequiredService<IConfiguration>();
                 var basketRepo = serviceProvider.GetRequiredService<IBasketRepostry>();
 
-                return new BasketService(basketRepo, mapper, configuration);
+                return ()=> new BasketService(basketRepo, mapper, configuration);
             });
 
             return service;
