@@ -22,6 +22,13 @@ namespace LinkDev.Talabat.APIs.Middlewares
             try
             {
                 await _next(httpContext);
+
+                //if(httpContext.Response.StatusCode ==(int) HttpStatusCode.NotFound)
+                //{
+                //    var response = new ApiResponse((int)HttpStatusCode.NotFound, $"the requested endpoint : {httpContext.Request.Path} is not found");
+                //    await httpContext.Response.WriteAsync(response.ToString());
+
+                //}
             }
             catch (Exception ex)
             {

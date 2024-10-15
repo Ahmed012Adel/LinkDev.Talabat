@@ -75,7 +75,7 @@ namespace LinkDev.Talabat.APIs
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseStaticFiles();
