@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Core.Domain.Contracts.Infrustructure
 {
-    public interface IBasketGeneric
+    public interface IBasketRepostry
     {
         Task<CustomerBasket?> GetAsync(string id);
 
         Task<CustomerBasket?> UpdateBasket(CustomerBasket basket,TimeSpan timeToLife);
 
-        Task DeleteBasket(string id);
+        Task<bool> DeleteAsync(string id);
     }
 }

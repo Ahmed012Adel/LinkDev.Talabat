@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Infrastructure
 {
-    internal class BasketGeneric : IBasketGeneric
+    internal class BasketRepostry : IBasketRepostry
     {
         private readonly IDatabase _database;
-        public BasketGeneric(IConnectionMultiplexer redis)
+        public BasketRepostry(IConnectionMultiplexer redis)
         {
             _database = redis.GetDatabase();
         }
@@ -33,7 +33,7 @@ namespace LinkDev.Talabat.Infrastructure
                 return basket;
             return null;
         }
-        public async Task DeleteBasket(string id)=>await _database.StringGetDeleteAsync(id);
+        public async Task<bool> DeleteAsync(string id)=>await _database.StringGetDeleteAsync(id);
 
     }
 }
