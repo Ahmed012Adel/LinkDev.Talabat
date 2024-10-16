@@ -33,7 +33,7 @@ namespace LinkDev.Talabat.Infrastructure
                 return basket;
             return null;
         }
-        public async Task<bool> DeleteAsync(string id)=>await _database.StringGetDeleteAsync(id);
+        public async Task DeleteAsync(string id) => await _database.StringGetDeleteAsync(id);
 
     }
 }

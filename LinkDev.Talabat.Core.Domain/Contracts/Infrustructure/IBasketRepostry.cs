@@ -13,6 +13,6 @@ namespace LinkDev.Talabat.Core.Domain.Contracts.Infrustructure
 
         Task<CustomerBasket?> UpdateBasket(CustomerBasket basket,TimeSpan timeToLife);
 
-        Task<bool> DeleteAsync(string id);
+        Task DeleteAsync(string id);
     }
 }

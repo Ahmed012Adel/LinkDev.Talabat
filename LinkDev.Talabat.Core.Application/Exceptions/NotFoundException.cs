@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LinkDev.Talabat.Apis.Controller.Exceptions
+namespace LinkDev.Talabat.Core.Application.Exceptions
 {
     public class NotFoundException :ApplicationException
     {

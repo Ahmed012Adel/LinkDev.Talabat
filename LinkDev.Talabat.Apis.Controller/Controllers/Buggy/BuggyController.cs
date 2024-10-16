@@ -13,7 +13,7 @@ namespace LinkDev.Talabat.Apis.Controller.Controllers.Buggy
     public class BuggyController : ApiControllerBase
     {
         [HttpGet("notfound")]
-        public IActionResult GetNotFoundRequest()
+        public IActionResult GetNotFoundError()
         {
             throw new NotFoundException("notfound" , 3);
             //return NotFound(new ApiResponse(404));

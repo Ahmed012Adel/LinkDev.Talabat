@@ -11,6 +11,7 @@ using LinkDev.Talabat.APIs.Services;
 using Microsoft.AspNetCore.Mvc;
 using LinkDev.Talabat.Apis.Controller.Error;
 using LinkDev.Talabat.APIs.Middlewares;
+using LinkDev.Talabat.Infrastructure;
 
 namespace LinkDev.Talabat.APIs
 {
@@ -32,9 +33,16 @@ namespace LinkDev.Talabat.APIs
                     option.InvalidModelStateResponseFactory = (actionContext) =>
                     {
                         var errors = actionContext.ModelState.Where(p => p.Value!.Errors.Count > 0)
-                                                             .SelectMany(E => E.Value!.Errors)
-                                                             .Select(E => E.ErrorMessage);
-                        return new BadRequestObjectResult(new ApiValidationErrorResponse() {Errors = errors });
+                                                             .Select(P => new ApiValidationErrorResponse.ValidationError()
+                                                             {
+                                                                 Field = P.Key,
+                                                                 Errors = P.Value!.Errors.Select(P => P.ErrorMessage)
+                                                             });
+                        return new BadRequestObjectResult(
+                            new ApiValidationErrorResponse() 
+                            {
+                                Errors = errors 
+                            });
                     };
                 })
                 .AddApplicationPart(typeof(AssemblyInformationApi).Assembly);
@@ -44,7 +52,8 @@ namespace LinkDev.Talabat.APIs
             webApplicationBuilder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             webApplicationBuilder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
-            webApplicationBuilder.Services.AddPersistenceService(webApplicationBuilder.Configuration);
+            webApplicationBuilder.Services.AddPersistenceService(webApplicationBuilder.Configuration)
+                                          .AddInfrustructureServices(webApplicationBuilder.Configuration);
             webApplicationBuilder.Services.AddApplicationService();
 
             webApplicationBuilder.Services.AddHttpContextAccessor();
@@ -65,7 +74,7 @@ namespace LinkDev.Talabat.APIs
 
             #region Configure Kestral Middleware
 
-            app.UseMiddleware<CustomExceptionHandelerMaddelware>();
+            app.UseMiddleware<ExceptionHandelerMaddelware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

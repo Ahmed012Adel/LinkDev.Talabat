@@ -24,7 +24,6 @@ namespace LinkDev.Talabat.Core.Application.Abstraction
 
 
             service.AddScoped(typeof(IServiceManager), typeof(ServiceManager));
-
             //service.AddScoped(typeof(IBasketService) , typeof(BasketService));
             //service.AddScoped(typeof(Func<IBasketService>) , typeof(Func<BasketService>) );
 
