@@ -2,6 +2,7 @@
 using LinkDev.Talabat.Core.Application.Abstraction.Common;
 using LinkDev.Talabat.Core.Application.Abstraction.Product;
 using LinkDev.Talabat.Core.Application.Abstraction.Product.Models;
+using LinkDev.Talabat.Core.Application.Exceptions;
 using LinkDev.Talabat.Core.Domain.Contracts;
 using LinkDev.Talabat.Core.Domain.Entities.Product;
 using LinkDev.Talabat.Core.Domain.Specifications.ProductSpec;
@@ -13,7 +14,12 @@ namespace LinkDev.Talabat.Core.Application.Services.Product
         public async Task<ProductToReturnDto> GetProductAsync(int id)
         {
             var spec = new ProductWithBarndAndCategoriesSpecification(id);
-            return mapper.Map<ProductToReturnDto>(await uniteOfWork.GetRepoitery<Core.Domain.Entities.Product.Product, int>().GetWithSpecAsync(spec));
+
+            var product = await uniteOfWork.GetRepoitery<Core.Domain.Entities.Product.Product, int>().GetWithSpecAsync(spec);
+
+            if (product is null) throw new NotFoundException(nameof(product),id);
+
+            return mapper.Map<ProductToReturnDto>(product);
         }
         public async Task<Pagination<ProductToReturnDto>> GetProductsAsync(ProductSpecParams specParams)
         {
