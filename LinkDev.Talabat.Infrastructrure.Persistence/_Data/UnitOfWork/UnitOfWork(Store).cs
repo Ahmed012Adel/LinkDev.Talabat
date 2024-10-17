@@ -1,13 +1,7 @@
 ﻿using LinkDev.Talabat.Core.Domain.Common;
 using LinkDev.Talabat.Core.Domain.Contracts;
-using LinkDev.Talabat.Core.Domain.Entities.Product;
 using LinkDev.Talabat.Infrastructrure.Persistence.Data.Repositeries;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.UnitOfWork
 {

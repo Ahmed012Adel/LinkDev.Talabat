@@ -1,5 +1,6 @@
 ﻿using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Core.Domain.Contracts;
+using LinkDev.Talabat.Infrastructrure.Persistence._Identity;
 using LinkDev.Talabat.Infrastructrure.Persistence.Data;
 using LinkDev.Talabat.Infrastructrure.Persistence.Data.Interceptor;
 using LinkDev.Talabat.Infrastructrure.Persistence.Data.UnitOfWork;
@@ -13,6 +14,8 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence
     {
         public static IServiceCollection AddPersistenceService(this IServiceCollection service, IConfiguration configuration)
         {
+            #region Store DbContext
+
             service.AddDbContext<StoreDbContxt>(optionBuilder =>
             {
                 optionBuilder
@@ -20,9 +23,21 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence
                 .UseSqlServer(configuration.GetConnectionString("StoreContext"));
             });
 
-            service.AddScoped(typeof(IUniteOfWork), typeof(UnitOfWork_Store_));
-            service.AddScoped(typeof(IStoreContextIntializer) , typeof(StoreContextntializer));
+            service.AddScoped(typeof(IStoreContextIntializer), typeof(StoreDbContextntializer));
             service.AddScoped(typeof(ISaveChangesInterceptor), typeof(BaseAuditableEntityInterceptor));
+            #endregion
+
+
+            service.AddDbContext<StoreIdentityDbContext>(optionBuilder =>
+            {
+                optionBuilder
+                .UseLazyLoadingProxies()
+                .UseSqlServer(configuration.GetConnectionString("IdentityContext"));
+            });
+
+            service.AddScoped(typeof(IUniteOfWork), typeof(UnitOfWork_Store_));
+
+
             return service;
         }
     }
