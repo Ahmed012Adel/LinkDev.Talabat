@@ -6,14 +6,11 @@ using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Core.Application.Exceptions
 {
-    public class BadRequestException : ApplicationException
+    public class ValidationException : BadRequestException
     {
-        public BadRequestException()
-        {
-            
-        }
-        public BadRequestException(string message)
-            :base(message) 
+        public required IEnumerable<string> Errors { get; set; }
+        public ValidationException(string? message = "Bad Request")
+            :base(message)
         {
             
         }
