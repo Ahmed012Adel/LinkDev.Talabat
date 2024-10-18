@@ -15,6 +15,7 @@ using LinkDev.Talabat.Infrastructure;
 using LinkDev.Talabat.Core.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using LinkDev.Talabat.Infrastructrure.Persistence._Identity;
+using LinkDev.Talabat.Core.Application.Services.Auth;
 
 namespace LinkDev.Talabat.APIs
 {
@@ -26,6 +27,7 @@ namespace LinkDev.Talabat.APIs
         {
             var webApplicationBuilder = WebApplication.CreateBuilder(args);
 
+            var config = webApplicationBuilder.Configuration;
             #region Configure Service
 
             webApplicationBuilder.Services
@@ -55,8 +57,9 @@ namespace LinkDev.Talabat.APIs
             webApplicationBuilder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             webApplicationBuilder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
-            webApplicationBuilder.Services.AddPersistenceService(webApplicationBuilder.Configuration)
-                                          .AddInfrustructureServices(webApplicationBuilder.Configuration);
+            webApplicationBuilder.Services.AddPersistenceService(config)
+                                          .AddInfrustructureServices(config)
+                                          .AddIdentityService(config);
             webApplicationBuilder.Services.AddApplicationService();
 
             webApplicationBuilder.Services.AddHttpContextAccessor();
@@ -64,8 +67,6 @@ namespace LinkDev.Talabat.APIs
 
             //webApplicationBuilder.Services.AddScoped(typeof(ILoggedUserInService), typeof(LoggedUserInService));
 
-            webApplicationBuilder.Services.AddIdentity<ApplicationUser , IdentityRole>()
-                .AddEntityFrameworkStores<StoreIdentityDbContext>();
 
             #endregion
             try
