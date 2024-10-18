@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Core.Domain.Contracts
 {
-    public interface IStoreContextIntializer : IDbIntializer
+    public interface IDbIntializer
     {
+
+         Task UpdateDatabaseAsync();
+
+        Task DataSeedAsync();
     }
 }

@@ -4,7 +4,7 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data
 {
     public class StoreDbContxt : DbContext
     {
-        public StoreDbContxt(DbContextOptions option) : base(option) 
+        public StoreDbContxt(DbContextOptions<StoreDbContxt> option) : base(option) 
         {
             
         }

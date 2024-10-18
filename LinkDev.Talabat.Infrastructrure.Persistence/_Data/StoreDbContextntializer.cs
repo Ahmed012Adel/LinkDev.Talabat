@@ -1,25 +1,13 @@
 ﻿using LinkDev.Talabat.Core.Domain.Contracts;
 using LinkDev.Talabat.Core.Domain.Entities.Product;
+using LinkDev.Talabat.Infrastructrure.Persistence.Common;
 using System.Text.Json;
 
 namespace LinkDev.Talabat.Infrastructrure.Persistence.Data
 {
-    public class StoreDbContextntializer(StoreDbContxt dbContxt) : IStoreContextIntializer
+    public class StoreDbContextntializer(StoreDbContxt dbContxt) : DbIntializer(dbContxt) , IStoreContextIntializer
     {
-        
-
-        public async Task UpdateDatabaseAsync()
-        {
-            var pendingMigration = await dbContxt.Database.GetPendingMigrationsAsync();
-
-            if (pendingMigration.Any())
-            {
-                await dbContxt.Database.MigrateAsync();
-            }
-
-        }
-
-        public async Task DataSeedAsync()
+        public override async Task DataSeedAsync()
         {
             if (!dbContxt.Brands.Any())
             {
@@ -62,5 +50,6 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data
 
 
         }
+
     }
 }

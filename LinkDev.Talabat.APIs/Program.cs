@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 using LinkDev.Talabat.Apis.Controller.Error;
 using LinkDev.Talabat.APIs.Middlewares;
 using LinkDev.Talabat.Infrastructure;
+using LinkDev.Talabat.Core.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
+using LinkDev.Talabat.Infrastructrure.Persistence._Identity;
 
 namespace LinkDev.Talabat.APIs
 {
@@ -61,11 +64,14 @@ namespace LinkDev.Talabat.APIs
 
             //webApplicationBuilder.Services.AddScoped(typeof(ILoggedUserInService), typeof(LoggedUserInService));
 
+            webApplicationBuilder.Services.AddIdentity<ApplicationUser , IdentityRole>()
+                .AddEntityFrameworkStores<StoreIdentityDbContext>();
 
             #endregion
+            try
+            {
 
-            var app = webApplicationBuilder.Build();
-
+                var app = webApplicationBuilder.Build();
             #region Database Intializer
 
             await app.IntializerStoreContextAsync();
@@ -93,6 +99,12 @@ namespace LinkDev.Talabat.APIs
             #endregion
 
             app.Run();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message,ex.StackTrace);
+            }
+
         }
     }
 }

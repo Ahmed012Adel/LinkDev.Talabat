@@ -10,6 +10,7 @@ namespace LinkDev.Talabat.APIs.Extention
             using var scope = app.Services.CreateAsyncScope();
             var service = scope.ServiceProvider;
             var storeContextIntializer = service.GetRequiredService<IStoreContextIntializer>();
+            var storeIDentityContextIntializer = service.GetRequiredService<IStoreIdentityDbIntializer>();
 
 
             var LoggerFactory = service.GetRequiredService<ILoggerFactory>();
@@ -19,6 +20,9 @@ namespace LinkDev.Talabat.APIs.Extention
                 await storeContextIntializer.UpdateDatabaseAsync();
                 await storeContextIntializer.DataSeedAsync();
 
+                await storeIDentityContextIntializer.UpdateDatabaseAsync();
+                await storeIDentityContextIntializer.DataSeedAsync();
+
             }
             catch (Exception ex)
             {
@@ -27,5 +31,6 @@ namespace LinkDev.Talabat.APIs.Extention
             }
             return app;
         }
+
     }
 }
