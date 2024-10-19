@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LinkDev.Talabat.Core.Application.Abstraction;
+using LinkDev.Talabat.Core.Application.Abstraction.AuthService;
 using LinkDev.Talabat.Core.Application.Abstraction.Basket;
 using LinkDev.Talabat.Core.Application.Abstraction.Product;
 using LinkDev.Talabat.Core.Application.Services.Product;
@@ -17,13 +18,17 @@ namespace LinkDev.Talabat.Core.Application.Services
         private readonly Lazy<IProductService> _productService;
 
         private readonly Lazy<IBasketService> _basketService;
-        public ServiceManager(IUniteOfWork uniteOfWork ,IMapper mapper,Func<IBasketService> basketServiceFactory)
+        private readonly Lazy<IAuthService> _authService;
+        public ServiceManager(IUniteOfWork uniteOfWork ,IMapper mapper,Func<IBasketService> basketServiceFactory ,Func<IAuthService> AuthFactory)
         {
             _productService = new Lazy<IProductService>(() => new ProductService(uniteOfWork,mapper));
-            _basketService = new Lazy<IBasketService>(basketServiceFactory);
+            _basketService = new Lazy<IBasketService>(basketServiceFactory,LazyThreadSafetyMode.ExecutionAndPublication);
+            _authService = new Lazy<IAuthService>(AuthFactory, LazyThreadSafetyMode.ExecutionAndPublication);
         }
         public IProductService ProductService => _productService.Value;
 
         public IBasketService BasketService => _basketService.Value;
+
+        public IAuthService AuthService => _authService.Value;
     }
 }

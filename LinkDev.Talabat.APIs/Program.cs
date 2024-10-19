@@ -1,21 +1,12 @@
-
-using LinkDev.Talabat.APIs.Extention;
-using LinkDev.Talabat.Core.Application.Abstraction;
-using LinkDev.Talabat.Core.Domain.Contracts;
-using LinkDev.Talabat.Infrastructrure.Persistence;
-using LinkDev.Talabat.Infrastructrure.Persistence.Data;
-using LinkDev.Talabat.Infrastructrure.Persistence.Data.Seeds;
-using Microsoft.EntityFrameworkCore;
 using LinkDev.Talabat.Apis.Controller;
-using LinkDev.Talabat.APIs.Services;
-using Microsoft.AspNetCore.Mvc;
 using LinkDev.Talabat.Apis.Controller.Error;
+using LinkDev.Talabat.APIs.Extention;
 using LinkDev.Talabat.APIs.Middlewares;
+using LinkDev.Talabat.APIs.Services;
+using LinkDev.Talabat.Core.Application.Abstraction;
+using LinkDev.Talabat.Infrastructrure.Persistence;
 using LinkDev.Talabat.Infrastructure;
-using LinkDev.Talabat.Core.Domain.Entities.Identity;
-using Microsoft.AspNetCore.Identity;
-using LinkDev.Talabat.Infrastructrure.Persistence._Identity;
-using LinkDev.Talabat.Core.Application.Services.Auth;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.Talabat.APIs
 {

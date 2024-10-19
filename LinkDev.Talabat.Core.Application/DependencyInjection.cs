@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LinkDev.Talabat.Core.Application.Abstraction.AuthService;
 using LinkDev.Talabat.Core.Application.Abstraction.Basket;
 using LinkDev.Talabat.Core.Application.Mapping;
 using LinkDev.Talabat.Core.Application.Services;
@@ -35,6 +36,8 @@ namespace LinkDev.Talabat.Core.Application.Abstraction
 
                 return ()=> new BasketService(basketRepo, mapper, configuration);
             });
+
+           
 
             return service;
         }

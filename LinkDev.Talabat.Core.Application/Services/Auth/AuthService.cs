@@ -11,7 +11,7 @@ using System.Text;
 
 namespace LinkDev.Talabat.Core.Application.Services.Auth
 {
-    internal class AuthService(
+    public class AuthService(
         IOptions<JwtSettings> jwtSetting,
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager) : IAuthService
@@ -23,11 +23,11 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
         {
             var user = await userManager.FindByEmailAsync(model.Email);
 
-            if (user is null) throw new BadRequestException("Invalide login");
+            if (user is null) throw new UnAuthorizedException("Invalide login");
 
             var result = await signInManager.CheckPasswordSignInAsync(user , model.Password,lockoutOnFailure : true);
            
-            if (!result.Succeeded) throw new BadRequestException("Invalide login");
+            if (!result.Succeeded) throw new UnAuthorizedException("Invalide login");
 
             var response = new UserDto()
             {
@@ -50,7 +50,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
 
             var result = await userManager.CreateAsync(user,model.Password);
 
-            if(result.Succeeded) throw new ValidationException() { Errors = result.Errors.Select(E=>E.Description) };
+            //if(result.Succeeded) throw new ValidationException() { Errors = result.Errors.Select(E=>E.Description) };
 
             var response = new UserDto()
             {

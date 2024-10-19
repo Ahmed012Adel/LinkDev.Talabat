@@ -1,15 +1,9 @@
 ﻿using LinkDev.Talabat.Apis.Controller.Controllers.BaseController;
-using LinkDev.Talabat.Apis.Controller.Error;
 using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Core.Application.Abstraction.Common;
 using LinkDev.Talabat.Core.Application.Abstraction.Product;
 using LinkDev.Talabat.Core.Application.Abstraction.Product.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Apis.Controller.Controllers.Product
 {

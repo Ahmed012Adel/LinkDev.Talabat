@@ -47,8 +47,6 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data
                 }
 
             }
-
-
         }
 
     }

@@ -69,16 +69,27 @@ namespace LinkDev.Talabat.APIs.Middlewares
                     response = new ApiResponse(404, ex.Message);
 
                     await httpContext.Response.WriteAsync(response.ToString());
+                    Console.WriteLine(ex.Source);
                     break;
 
 
 
-                case BadRequestException:
+                case (BadRequestException):
 
                     httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     httpContext.Response.ContentType = "application/json";
 
                     response = new ApiResponse(400, ex.Message);
+
+                    await httpContext.Response.WriteAsync(response.ToString());
+                    break;
+                
+                case UnAuthorizedException:
+
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    httpContext.Response.ContentType = "application/json";
+
+                    response = new ApiResponse(401, ex.Message);
 
                     await httpContext.Response.WriteAsync(response.ToString());
                     break;

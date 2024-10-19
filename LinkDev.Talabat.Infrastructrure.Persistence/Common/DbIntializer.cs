@@ -11,14 +11,14 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Common
     {
         public virtual async Task DataSeedAsync()
         {
+            throw new NotImplementedException();
+        }
+
+        public virtual async Task UpdateDatabaseAsync()
+        {
             var PendingMigration = await dbContext.Database.GetPendingMigrationsAsync();
             if (PendingMigration.Any())
                 await dbContext.Database.MigrateAsync();
-        }
-
-        public virtual Task UpdateDatabaseAsync()
-        {
-            throw new NotImplementedException();
         }
     }
 }
