@@ -61,8 +61,8 @@ namespace LinkDev.Talabat.APIs
 
             //webApplicationBuilder.Services.AddScoped(typeof(ILoggedUserInService), typeof(LoggedUserInService));
 
-            webApplicationBuilder.Services.AddIdentity<ApplicationUser, IdentityRole>(/*identrtyConfig =>*/)
-                .AddEntityFrameworkStores<IdentityDbContext>();
+            //webApplicationBuilder.Services.AddIdentity<ApplicationUser, IdentityRole>(/*identrtyConfig =>*/)
+            //    .AddEntityFrameworkStores<IdentityDbContext>();
 
             #endregion
 
