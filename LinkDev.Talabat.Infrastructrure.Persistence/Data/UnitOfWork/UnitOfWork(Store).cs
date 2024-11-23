@@ -23,7 +23,7 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.UnitOfWork
             this.dbContxt = dbContxt; 
             _repositry = new ();
         }
-        public async Task ComplateAsync()
+        public async Task<int> ComplateAsync()
           => await dbContxt.SaveChangesAsync();
 
         public async ValueTask DisposeAsync() => await dbContxt.DisposeAsync();

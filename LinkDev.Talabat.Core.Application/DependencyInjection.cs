@@ -29,18 +29,25 @@ namespace LinkDev.Talabat.Core.Application.Abstraction
             //service.AddScoped(typeof(IBasketService) , typeof(BasketService));
             //service.AddScoped(typeof(Func<IBasketService>) , typeof(Func<BasketService>) );
 
+            //service.AddScoped(typeof(Func<IBasketService>), (serviceProvider) =>
+            //{
+            //    var mapper = serviceProvider.GetRequiredService<IMapper>();
+            //    var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            //    var basketRepo = serviceProvider.GetRequiredService<IBasketRepostry>();
+
+            //    return ()=> new BasketService(basketRepo, mapper, configuration);
+            //});
+
+            service.AddScoped(typeof(IBasketService), typeof(BasketService));
+
             service.AddScoped(typeof(Func<IBasketService>), (serviceProvider) =>
             {
-                var mapper = serviceProvider.GetRequiredService<IMapper>();
-                var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-                var basketRepo = serviceProvider.GetRequiredService<IBasketRepostry>();
-
-                return ()=> new BasketService(basketRepo, mapper, configuration);
+                return () => serviceProvider.GetRequiredService(typeof(OrderService));
             });
 
             service.AddScoped(typeof(IOrdersService), typeof(OrderService));
 
-            service.AddScoped(typeof(IOrdersService), (serviceProvider) =>
+            service.AddScoped(typeof(Func<IOrdersService>), (serviceProvider) =>
             {
                 return () => serviceProvider.GetRequiredService(typeof(OrderService));
             });
