@@ -15,6 +15,6 @@ namespace LinkDev.Talabat.Core.Domain.Contracts
             where Tkey : IEquatable<Tkey>;
 
 
-        Task ComplateAsync();
+        Task<int> ComplateAsync();
     }
 }
