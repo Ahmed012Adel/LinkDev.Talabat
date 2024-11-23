@@ -1,4 +1,5 @@
 ﻿using LinkDev.Talabat.Core.Domain.Contracts;
+using LinkDev.Talabat.Core.Domain.Entities.Orders;
 using LinkDev.Talabat.Core.Domain.Entities.Product;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -61,6 +62,19 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data
                 if (Products?.Count > 0)
                 {
                     await dbContxt.Set<Product>().AddRangeAsync(Products);
+                    await dbContxt.SaveChangesAsync();
+                }
+
+            }
+
+            if (!dbContxt.DeliveryMethods.Any())
+            {
+                var DeliveryMethod = await File.ReadAllTextAsync("../LinkDev.Talabat.Infrastructrure.Persistence/Data/Seeds/delivery.json");
+                var Methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(DeliveryMethod);
+
+                if (Methods?.Count > 0)
+                {
+                    await dbContxt.Set<DeliveryMethod>().AddRangeAsync(Methods);
                     await dbContxt.SaveChangesAsync();
                 }
 

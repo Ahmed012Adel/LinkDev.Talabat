@@ -16,9 +16,9 @@ namespace LinkDev.Talabat.Core.Domain.Entities.Orders
         
         
         public int? deliveryMethodId { get; set; }
-        public DeliveryMethod? deliveryMethod { get; set; }
+        public virtual DeliveryMethod? deliveryMethod { get; set; }
 
-        public required ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
+        public virtual required ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
 
         public decimal SupTotal { get; set; }
         //[NotMapped]
