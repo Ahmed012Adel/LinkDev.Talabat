@@ -6,6 +6,7 @@ using LinkDev.Talabat.Core.Application.Exceptions;
 using LinkDev.Talabat.Core.Domain.Contracts;
 using LinkDev.Talabat.Core.Domain.Entities.Orders;
 using LinkDev.Talabat.Core.Domain.Entities.Product;
+using LinkDev.Talabat.Core.Domain.Specifications.OrderSpecifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,19 +85,29 @@ namespace LinkDev.Talabat.Core.Application.Services.Order
 
         }
 
-        public Task<IEnumerable<DeliveryMethodeDto>> getDeliveryMethodAsync()
+        public async Task<IEnumerable<OrderToReturnDto>> getOrderForUserAsync(string buyerEmail)
         {
-            throw new NotImplementedException();
+            var spec = new OrderSpec(buyerEmail);
+            var orders = await uniteOfWork.GetRepoitery<Domain.Entities.Orders.Order, int>().GetWithSpecAllAsync(spec);
+
+            return mapper.Map<IEnumerable<OrderToReturnDto>>(orders);
         }
 
-        public Task<OrderToReturnDto> GetOrderByIdAsync(string buyerEmail, int orderId)
+        public async Task<OrderToReturnDto> GetOrderByIdAsync(string buyerEmail, int orderId)
         {
-            throw new NotImplementedException();
+            var spec = new OrderSpec(buyerEmail , orderId);
+            var order = await uniteOfWork.GetRepoitery<Domain.Entities.Orders.Order, int>().GetWithSpecAsync(spec);
+
+            if (order is null) throw new NotFoundException(nameof(order), orderId);
+
+            return mapper.Map<OrderToReturnDto>(order);
+        }
+        public async Task<IEnumerable<DeliveryMethodeDto>> getDeliveryMethodAsync()
+        {
+            var deliveryMethod = await uniteOfWork.GetRepoitery<DeliveryMethod, int>().GetAllAsync();
+
+            return mapper.Map<IEnumerable<DeliveryMethodeDto>>(deliveryMethod);
         }
 
-        public Task<IEnumerable<OrderToReturnDto>> getOrderForUserAsync(string buyerEmail)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
