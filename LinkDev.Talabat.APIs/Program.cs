@@ -48,7 +48,10 @@ namespace LinkDev.Talabat.APIs
 
             // Add services to the container.
 
-            webApplicationBuilder.Services.AddControllers();
+            webApplicationBuilder.Services.AddControllers()/*.AddNewtonsoftJson(option =>
+            {
+                option.SerializerSettings.RefrenceLoopHandling = RefrenceLoopHandling.Ignore;
+            })*/;
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             webApplicationBuilder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
             webApplicationBuilder.Services.AddPersistenceService(config)
