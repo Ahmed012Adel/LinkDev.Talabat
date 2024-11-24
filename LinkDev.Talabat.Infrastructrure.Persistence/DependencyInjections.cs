@@ -25,16 +25,18 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence
             });
 
             service.AddScoped(typeof(IStoreContextIntializer), typeof(StoreDbContextntializer));
-            service.AddScoped(typeof(ISaveChangesInterceptor), typeof(BaseAuditableEntityInterceptor));
+            service.AddScoped(typeof(ISaveChangesInterceptor), typeof(AuditInterceptor));
             #endregion
 
-            service.AddDbContext<StoreIdentityDbContext>(options =>
+            service.AddDbContext<StoreIdentityDbContext>((seviceProvider , options) =>
             {
                 options
                     .UseLazyLoadingProxies()
-                    .UseSqlServer(configuration.GetConnectionString("IdentityContext"));
+                    .UseSqlServer(configuration.GetConnectionString("IdentityContext"))
+                    .AddInterceptors(seviceProvider.GetRequiredService<AuditInterceptor>());
             });
 
+            service.AddScoped(typeof(AuditInterceptor));
             service.AddScoped<IStoreIdentityDbIntializer, StoreIdentityDbIntializer>();
 
             service.AddScoped(typeof(IUniteOfWork), typeof(UnitOfWork_Store_));

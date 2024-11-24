@@ -6,11 +6,11 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Interceptor
 {
 
     // Interceptor
-    internal class BaseAuditableEntityInterceptor : SaveChangesInterceptor
+    internal class AuditInterceptor : SaveChangesInterceptor
     {
         private readonly ILoggedUserInService _loggedUserInService;
 
-        public BaseAuditableEntityInterceptor(ILoggedUserInService loggedUserInService)
+        public AuditInterceptor(ILoggedUserInService loggedUserInService)
         {
             _loggedUserInService = loggedUserInService;
         }
@@ -21,10 +21,11 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Interceptor
 
             return base.SavingChanges(eventData, result);
         }
-        public override ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result, CancellationToken cancellationToken = default)
+
+        public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
         {
             UpdateEntites(eventData.Context);
-            return base.SavedChangesAsync(eventData, result, cancellationToken);
+            return base.SavingChangesAsync(eventData, result, cancellationToken);
         }
 
         private void UpdateEntites(DbContext? dbContext)
@@ -33,7 +34,7 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Interceptor
 
             var UTC = DateTime.UtcNow;
 
-            foreach(var Entry in dbContext.ChangeTracker.Entries<BaseAuditableEntity<int>>()
+            foreach(var Entry in dbContext.ChangeTracker.Entries<IBaseAuditableEntity>()
                 .Where(Entery => Entery.State is EntityState.Added or EntityState.Modified))
             {
                 if(Entry.State is EntityState.Added  )
