@@ -15,6 +15,7 @@ namespace LinkDev.Talabat.Core.Application.Abstraction.AuthService
 
         Task<UserDto> RigisterAsync(RigisterDto model);
         Task<UserDto> GetCurrentUser(ClaimsPrincipal claims);
-        Task<AddressDto> GetUSerAddress(ClaimsPrincipal claims);
+        Task<AddressDto?> GetUSerAddress(ClaimsPrincipal claims);
+        Task<AddressDto> UpdateUserAddress(ClaimsPrincipal claims, AddressDto address);
     }
 }
