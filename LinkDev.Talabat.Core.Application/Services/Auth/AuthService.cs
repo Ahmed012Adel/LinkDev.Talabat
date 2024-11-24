@@ -37,6 +37,11 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
             };
         }
 
+        public async Task<bool> EmailExist(string email)
+        {
+            return await userManager.FindByEmailAsync(email) is not null;
+        }
+
         public async Task<AddressDto?> GetUSerAddress(ClaimsPrincipal claims)
         {
             var user = await userManager.FindUserWithAddress(claims);
@@ -133,5 +138,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
 
             return new JwtSecurityTokenHandler().WriteToken(TokenObj);
         }
+
+        
     }
 }
