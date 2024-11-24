@@ -1,8 +1,10 @@
 ﻿using LinkDev.Talabat.Apis.Controller.Controllers.BaseController;
 using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Core.Application.Abstraction.AuthService.Model;
+using LinkDev.Talabat.Core.Application.Abstraction.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Sockets;
 
 namespace LinkDev.Talabat.Apis.Controller.Controllers.Account
 {
@@ -28,6 +30,15 @@ namespace LinkDev.Talabat.Apis.Controller.Controllers.Account
             var user = await serviceManager.AuthService.GetCurrentUser(User);
 
             return Ok(user);
+        }
+
+        [Authorize]
+        [HttpGet("Address")]
+        public async Task<ActionResult<AddressDto>> GetUserAddress()
+        {
+            var address = await serviceManager.AuthService.GetUSerAddress(User);
+         
+            return Ok(address);
         }
     }
 }

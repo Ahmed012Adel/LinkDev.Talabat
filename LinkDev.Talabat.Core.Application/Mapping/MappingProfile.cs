@@ -6,14 +6,11 @@ using LinkDev.Talabat.Core.Application.Abstraction.Order.Models;
 using LinkDev.Talabat.Core.Application.Abstraction.Product.Models;
 using LinkDev.Talabat.Core.Domain.Entities.Basket;
 using LinkDev.Talabat.Core.Domain.Entities.Employees;
-using LinkDev.Talabat.Core.Domain.Entities.Orders;
 using LinkDev.Talabat.Core.Domain.Entities.Product;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.WebRequestMethods;
+using LinkDev.Talabat.Core.Domain.Entities.Orders;
+
+using OrderAddress = LinkDev.Talabat.Core.Domain.Entities.Orders.Address;
+using UserAddress = LinkDev.Talabat.Core.Domain.Entities.Identity.Address;
 
 namespace LinkDev.Talabat.Core.Application.Mapping
 {
@@ -45,7 +42,8 @@ namespace LinkDev.Talabat.Core.Application.Mapping
 
 
             CreateMap<DeliveryMethod, DeliveryMethodeDto>();
-            CreateMap<Address, AddressDto>().ReverseMap();
+            CreateMap<OrderAddress, AddressDto>().ReverseMap();
+            CreateMap<UserAddress, AddressDto>();
         }
     }
 }
