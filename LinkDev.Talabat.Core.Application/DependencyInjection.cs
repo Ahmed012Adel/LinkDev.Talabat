@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using LinkDev.Talabat.Core.Application.Abstraction.AuthService;
 using LinkDev.Talabat.Core.Application.Abstraction.Basket;
+using LinkDev.Talabat.Core.Application.Abstraction.Order;
 using LinkDev.Talabat.Core.Application.Mapping;
 using LinkDev.Talabat.Core.Application.Services;
 using LinkDev.Talabat.Core.Application.Services.Basket;
+using LinkDev.Talabat.Core.Application.Services.Order;
 using LinkDev.Talabat.Core.Domain.Contracts.Infrustructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,16 +30,26 @@ namespace LinkDev.Talabat.Core.Application.Abstraction
             //service.AddScoped(typeof(IBasketService) , typeof(BasketService));
             //service.AddScoped(typeof(Func<IBasketService>) , typeof(Func<BasketService>) );
 
-            service.AddScoped(typeof(Func<IBasketService>), (serviceProvider) =>
+            service.AddScoped(typeof(IBasketService), typeof(BasketService));
+
+            service.AddScoped(typeof(Func<IBasketService>), serviceProvider =>
             {
-                var mapper = serviceProvider.GetRequiredService<IMapper>();
-                var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-                var basketRepo = serviceProvider.GetRequiredService<IBasketRepostry>();
-
-                return ()=> new BasketService(basketRepo, mapper, configuration);
+                return () => serviceProvider.GetRequiredService<BasketService>();
             });
+            //service.AddScoped(typeof(Func<IBasketService>), (serviceProvider) =>
+            //{
+            //    var mapper = serviceProvider.GetRequiredService<IMapper>();
+            //    var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            //    var basketRepo = serviceProvider.GetRequiredService<IBasketRepostry>();
 
-           
+            //    return ()=> new BasketService(basketRepo, mapper, configuration);
+            //});
+
+            service.AddScoped(typeof(IOrdersService), typeof(OrderService));
+            service.AddScoped(typeof(Func<IOrdersService>), serviceProvider =>
+            {
+                return () => serviceProvider.GetRequiredService<OrderService>();
+            });
 
             return service;
         }

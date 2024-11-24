@@ -5,12 +5,7 @@ using LinkDev.Talabat.Core.Application.Abstraction.Order.Models;
 using LinkDev.Talabat.Core.Application.Exceptions;
 using LinkDev.Talabat.Core.Domain.Contracts;
 using LinkDev.Talabat.Core.Domain.Entities.Orders;
-using LinkDev.Talabat.Core.Domain.Entities.Product;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LinkDev.Talabat.Core.Domain.Specifications.OrderSpecifications;
 
 namespace LinkDev.Talabat.Core.Application.Services.Order
 {
@@ -84,19 +79,30 @@ namespace LinkDev.Talabat.Core.Application.Services.Order
 
         }
 
-        public Task<IEnumerable<DeliveryMethodeDto>> getDeliveryMethodAsync()
+        public async Task<OrderToReturnDto> GetOrderByIdAsync(string buyerEmail, int orderId)
         {
-            throw new NotImplementedException();
+
+        var spec = new OrderSpec(buyerEmail, orderId);
+        var order = await uniteOfWork.GetRepoitery<Domain.Entities.Orders.Order, int>().GetWithSpecAsync(spec);
+        
+            if (order is null) throw new NotFoundException(nameof(order), orderId);
+            return mapper.Map<OrderToReturnDto>(order);
         }
 
-        public Task<OrderToReturnDto> GetOrderByIdAsync(string buyerEmail, int orderId)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<IEnumerable<OrderToReturnDto>> getOrderForUserAsync(string buyerEmail)
+        public async Task<IEnumerable<OrderToReturnDto>> GetOrderForUserAsync(string buyerEmail)
         {
-            throw new NotImplementedException();
+            var spec = new OrderSpec(buyerEmail);
+            var orders = await uniteOfWork.GetRepoitery<Domain.Entities.Orders.Order, int>().GetWithSpecAllAsync(spec);
+
+            return mapper.Map<IEnumerable<OrderToReturnDto>>(orders);
+
         }
+        public async Task<IEnumerable<DeliveryMethodeDto>> GetDeliveryMethodAsync()
+    {
+        var deliveryMethod = await uniteOfWork.GetRepoitery<DeliveryMethod, int>().GetAllAsync();
+
+        return mapper.Map<IEnumerable<DeliveryMethodeDto>>(deliveryMethod);
     }
+}
 }
