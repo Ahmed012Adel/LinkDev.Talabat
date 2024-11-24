@@ -57,6 +57,10 @@ namespace LinkDev.Talabat.Core.Application.Services.Order
 
             var Address = mapper.Map<Address>(order.ShippingAddress);
 
+            // 5. get DeliveryMethod
+
+            var deliveryMethod = await uniteOfWork.GetRepoitery<DeliveryMethod ,int>().GetAsync(order.DeliveryMethodId);
+
             // 5. createOrder
 
             var OrderToCreateDto = new Domain.Entities.Orders.Order()
@@ -65,7 +69,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Order
                 ShippingAddress = Address,
                 OrderItems = OrderItems,
                 SupTotal = subtotal,
-                deliveryMethodId = order.DeliveryMethodId
+                deliveryMethod = deliveryMethod
             };
 
             await uniteOfWork.GetRepoitery<Domain.Entities.Orders.Order, int>().AddAsync(OrderToCreateDto);
