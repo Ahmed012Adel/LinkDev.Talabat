@@ -19,7 +19,7 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence._Identity
             base.OnModelCreating(builder);
 
             builder.ApplyConfigurationsFromAssembly(typeof(AssemblyInformation).Assembly,
-                   type => type.GetCustomAttributes<DbContextTypeAttributr>().FirstOrDefault()?.DbcontextType == typeof(StoreIdentityDbContext));
+                   type => type.GetCustomAttributes<DbContextTypeAttribute>().FirstOrDefault()?.DbcontextType == typeof(StoreIdentityDbContext));
         }
     }
 }

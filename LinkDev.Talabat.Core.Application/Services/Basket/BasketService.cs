@@ -40,6 +40,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Basket
 
         public async Task DeleteBasketAsync(string BasketId)
         {
+            if(BasketId is null) throw new NotFoundException(nameof(BasketId),BasketId);
             await basketrepostry.DeleteAsync(BasketId);
 
             //if (!deleted) throw new BadRequestObjectResult("not deleted");

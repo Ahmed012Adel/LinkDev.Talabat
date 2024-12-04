@@ -3,7 +3,7 @@ using LinkDev.Talabat.Infrastructrure.Persistence.Common;
 
 namespace LinkDev.Talabat.Infrastructrure.Persistence._Identity.Config
 {
-    [DbContextTypeAttributr(typeof(StoreIdentityDbContext))]
+    [DbContextTypeAttribute(typeof(StoreIdentityDbContext))]
     internal class ApplicationUserConfogurations : IEntityTypeConfiguration<ApplicationUser>
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)

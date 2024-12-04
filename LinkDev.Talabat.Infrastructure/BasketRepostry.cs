@@ -33,7 +33,21 @@ namespace LinkDev.Talabat.Infrastructure
                 return basket;
             return null;
         }
-        public async Task DeleteAsync(string id) => await _database.StringGetDeleteAsync(id);
+        public async Task DeleteAsync(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentException("ID cannot be null or empty", nameof(id));
 
+            try
+            {
+                await _database.StringGetDeleteAsync(id);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (use a logging framework like Serilog or NLog)
+                Console.Error.WriteLine($"Error deleting item with ID '{id}': {ex.Message}");
+                throw; // Re-throw the exception to maintain stack trace
+            }
+        }
     }
 }

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 namespace LinkDev.Talabat.Infrastructrure.Persistence.Common
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class DbContextTypeAttributr : Attribute
+    public class DbContextTypeAttribute : Attribute
     {
         public Type DbcontextType { get; }
 
-        public DbContextTypeAttributr(Type dbcontextType)
+        public DbContextTypeAttribute(Type dbcontextType)
         {
             DbcontextType = dbcontextType;
         }

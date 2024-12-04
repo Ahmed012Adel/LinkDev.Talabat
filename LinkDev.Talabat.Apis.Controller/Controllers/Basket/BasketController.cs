@@ -1,6 +1,7 @@
 ﻿using LinkDev.Talabat.Apis.Controller.Controllers.BaseController;
 using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Core.Application.Abstraction.Basket.Model;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,8 @@ namespace LinkDev.Talabat.Apis.Controller.Controllers.Basket
         [HttpDelete]
         public async Task DeleteBasket(string id)
         {
+            
+
             await serviceManager.BasketService.DeleteBasketAsync(id);
         }
     }

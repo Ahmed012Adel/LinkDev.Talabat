@@ -10,6 +10,7 @@ using LinkDev.Talabat.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace LinkDev.Talabat.APIs
 {
@@ -48,10 +49,10 @@ namespace LinkDev.Talabat.APIs
 
             // Add services to the container.
 
-            webApplicationBuilder.Services.AddControllers()/*.AddNewtonsoftJson(option =>
+            webApplicationBuilder.Services.AddControllers().AddNewtonsoftJson(option =>
             {
-                option.SerializerSettings.RefrenceLoopHandling = RefrenceLoopHandling.Ignore;
-            })*/;
+                option.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             webApplicationBuilder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
             webApplicationBuilder.Services.AddPersistenceService(config)
