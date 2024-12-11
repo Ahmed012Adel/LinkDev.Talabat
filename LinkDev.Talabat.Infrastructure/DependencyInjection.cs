@@ -1,12 +1,8 @@
 ﻿using LinkDev.Talabat.Core.Domain.Contracts.Infrustructure;
+using LinkDev.Talabat.Shared;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Infrastructure
 {
@@ -24,6 +20,8 @@ namespace LinkDev.Talabat.Infrastructure
             });
 
             services.AddScoped(typeof(IBasketRepostry) , typeof(BasketRepostry));
+
+            services.Configure<RedisSetting>(_ => configuration.GetSection("RedisSetting"));
 
             return services;
         } 

@@ -14,7 +14,7 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AssemblyInformation).Assembly,
-                type => type.GetCustomAttributes<DbContextTypeAttributr>().FirstOrDefault()?.DbcontextType == typeof(StoreDbContxt));
+                type => type.GetCustomAttributes<DbContextTypeAttribute>().FirstOrDefault()?.DbcontextType == typeof(StoreDbContxt));
         }
 
         public DbSet<Product> Products { get; set; }
