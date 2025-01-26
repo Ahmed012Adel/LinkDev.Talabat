@@ -25,7 +25,7 @@ namespace LinkDev.Talabat.Core.Domain.Entities.Orders
         //public decimal Total { get{ return SupTotal + deliveryMethod!.Cost; } }
 
         // Getter Method
-        public decimal GetTotal => SupTotal + deliveryMethod!.Cost;
+        public decimal GetTotal => SupTotal + deliveryMethod?.Cost ?? 0;
 
         public string PaymentIntenedId { get; set; } = "";
     }

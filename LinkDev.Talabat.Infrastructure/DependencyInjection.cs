@@ -1,4 +1,6 @@
-﻿using LinkDev.Talabat.Core.Domain.Contracts.Infrustructure;
+﻿using LinkDev.Talabat.Core.Application.Abstraction.Infrastructure;
+using LinkDev.Talabat.Core.Domain.Contracts.Infrustructure;
+using LinkDev.Talabat.Infrastructure.Payment_Service;
 using LinkDev.Talabat.Shared;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +11,7 @@ namespace LinkDev.Talabat.Infrastructure
     public static class DependencyInjection
     {
 
-        public static IServiceCollection AddInfrustructureServices(this IServiceCollection services , IConfiguration configuration)
+        public static IServiceCollection AddInfrustructureServices(this IServiceCollection services , Microsoft.Extensions.Configuration.IConfiguration configuration )
         {
 
             services.AddSingleton(typeof(IConnectionMultiplexer), (ServiceProvider) =>
@@ -21,8 +23,11 @@ namespace LinkDev.Talabat.Infrastructure
 
             services.AddScoped(typeof(IBasketRepostry) , typeof(BasketRepostry));
 
-            services.Configure<RedisSetting>(_ => configuration.GetSection("RedisSetting"));
+            services.Configure<RedisSetting>(configuration.GetSection("RedisSetting"));
+            services.Configure<StripeSetting>(configuration.GetSection("StripeSetting"));
+            
 
+            services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
             return services;
         } 
     }

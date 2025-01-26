@@ -1,7 +1,8 @@
-﻿using LinkDev.Talabat.Core.Application.Abstraction.Infrastructure;
+﻿using AutoMapper;
+using LinkDev.Talabat.Core.Application.Abstraction.Basket.Model;
+using LinkDev.Talabat.Core.Application.Abstraction.Infrastructure;
 using LinkDev.Talabat.Core.Domain.Contracts;
 using LinkDev.Talabat.Core.Domain.Contracts.Infrustructure;
-using LinkDev.Talabat.Core.Domain.Entities.Basket;
 using LinkDev.Talabat.Core.Domain.Entities.Orders;
 using LinkDev.Talabat.Shared;
 using Microsoft.Extensions.Options;
@@ -10,21 +11,35 @@ using Product = LinkDev.Talabat.Core.Domain.Entities.Product.Product;
 
 namespace LinkDev.Talabat.Infrastructure.Payment_Service
 {
-    internal class PaymentService(IBasketRepostry basketRepostry , IUniteOfWork uniteOfWork , IOptions<RedisSetting> redisSetting) : IPaymentService
+    internal class PaymentService(IBasketRepostry basketRepostry
+        ,IMapper mapper
+        , IUniteOfWork uniteOfWork ,
+        IOptions<RedisSetting> redisSetting,
+        IOptions<StripeSetting> stripeSetting) : IPaymentService
     {
         private readonly RedisSetting _redisSetting = redisSetting.Value; 
-        public async Task<CustomerBasket?> CreateOrUpdatePaymentIntent(string BasketId)
+        private readonly StripeSetting _stripeSetting = stripeSetting.Value; 
+
+        public async Task<CustomerBasketDto?> CreateOrUpdatePaymentIntent(string BasketId)
         {
+            StripeConfiguration.ApiKey = _stripeSetting.SecretKey;
             var basket = await basketRepostry.GetAsync(BasketId);
 
             if (basket is null) return null;
+           
+            #region Check Delivery price || Cost
 
             if (basket.DeliveryMethodId.HasValue)
             {
-                var deliveryMethod = await uniteOfWork.GetRepoitery<DeliveryMethod, int>().GetAsync(basket.DeliveryMethodId.Value);
+                var deliveryMethod = await uniteOfWork.GetRepoitery<DeliveryMethod, int>().GetAsync((int)basket.DeliveryMethodId);
                 if (deliveryMethod is null) return null;
                 basket.ShippingPrice = deliveryMethod.Cost;
             }
+
+            #endregion
+            
+
+            #region Check price of item == price or Product ||!
 
             if (basket.Items.Count > 0)
             {
@@ -32,10 +47,14 @@ namespace LinkDev.Talabat.Infrastructure.Payment_Service
                 foreach (var item in basket.Items)
                 {
                     var product = await productRepo.GetAsync(item.Id);
+                    if (product is null) return null;
                     if (item.price != product!.Price)
                         item.price = product.Price;
                 }
             }
+
+            #endregion
+
 
             PaymentIntent? paymentIntent = null;
 
@@ -50,24 +69,24 @@ namespace LinkDev.Talabat.Infrastructure.Payment_Service
                     PaymentMethodTypes = new List<string>() { "card" }
                 };
 
-                paymentIntent = await paymentIntentService.CreateAsync(options);
+                paymentIntent = await paymentIntentService.CreateAsync(options);  //Integration with Stripe Service
 
                 basket.PaymentIntentId = paymentIntent.Id;
                 basket.ClientSecret = paymentIntent.ClientSecret;
             }
-            else
+            else // Update an Existing Payment Inteted
             {
                 var options = new PaymentIntentUpdateOptions()
                 {
                     Amount = (long)basket.Items.Sum(item => item.price * 100 * item.Quantity) + (long)basket.ShippingPrice * 100,
 
                 };
-                paymentIntent = await paymentIntentService.UpdateAsync(basket.PaymentIntentId, options);
+                paymentIntent = await paymentIntentService.UpdateAsync(basket.PaymentIntentId, options); //Integration with Stripe Service
             }
 
 
             await basketRepostry.UpdateBasket(basket , TimeSpan.FromDays(_redisSetting.TimeToLiveInDays)); 
-            return basket;
+            return mapper.Map<CustomerBasketDto>(basket);
         }
     }
 }

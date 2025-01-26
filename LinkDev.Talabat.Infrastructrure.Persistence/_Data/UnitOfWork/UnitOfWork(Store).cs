@@ -18,7 +18,18 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.UnitOfWork
             _repositry = new ();
         }
         public async Task<int> ComplateAsync()
-          => await dbContxt.SaveChangesAsync();
+        {
+            try
+            {
+                return await dbContxt.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging
+                Console.WriteLine($"Error in SaveChangesAsync: {ex.Message}");
+                throw;
+            }
+        }
 
         public async ValueTask DisposeAsync() => await dbContxt.DisposeAsync();
 

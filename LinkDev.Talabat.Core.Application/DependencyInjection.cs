@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using LinkDev.Talabat.Core.Application.Abstraction.AuthService;
 using LinkDev.Talabat.Core.Application.Abstraction.Basket;
+using LinkDev.Talabat.Core.Application.Abstraction.Infrastructure;
 using LinkDev.Talabat.Core.Application.Abstraction.Order;
 using LinkDev.Talabat.Core.Application.Mapping;
 using LinkDev.Talabat.Core.Application.Services;
 using LinkDev.Talabat.Core.Application.Services.Basket;
 using LinkDev.Talabat.Core.Application.Services.Order;
+using LinkDev.Talabat.Core.Domain.Contracts;
 using LinkDev.Talabat.Core.Domain.Contracts.Infrustructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,9 +48,16 @@ namespace LinkDev.Talabat.Core.Application.Abstraction
             });
 
             service.AddScoped(typeof(IOrdersService), typeof(OrderService));
+
             service.AddScoped(typeof(Func<IOrdersService>), serviceProvider =>
             {
-                return () => serviceProvider.GetRequiredService<OrderService>();
+
+                var mapper = serviceProvider.GetRequiredService<IMapper>();
+                var basketService = serviceProvider.GetRequiredService<IBasketService>();
+                var UnitofWork = serviceProvider.GetRequiredService<IUniteOfWork>();
+                var PaymentService = serviceProvider.GetRequiredService<IPaymentService>();
+
+                return () => new OrderService(basketService, UnitofWork, mapper, PaymentService);
             });
 
             return service;

@@ -11,6 +11,7 @@ namespace LinkDev.Talabat.Core.Application.Abstraction.Order.Models
     {
         public required string BasketId { get; set; }
         public int DeliveryMethodId { get; set; }
+        public string? DeliveryMethod { get; set; }
         public AddressDto ShippingAddress { get; set; }
     }
 }

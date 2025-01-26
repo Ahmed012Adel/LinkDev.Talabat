@@ -24,6 +24,7 @@ namespace LinkDev.Talabat.Core.Application.Abstraction.Order.Models
 
         public decimal SupTotal { get; set; }
         public decimal Total { get /*{ return SupTotal + deliveryMethod!.Cost; }*/; set; }
+        public string PaymentIntenedId { get; set; }
 
         // Getter Method
         //public decimal GetTotal => SupTotal + deliveryMethod!.Cost;

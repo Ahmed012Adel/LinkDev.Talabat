@@ -9,7 +9,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace LinkDev.Talabat.Core.Application.Services.Basket
 {
-    internal class BasketService(IBasketRepostry basketrepostry , IMapper mapper , IConfiguration configuration) : IBasketService
+    internal class BasketService(IBasketRepostry basketrepostry
+                               , IMapper mapper 
+                               , IConfiguration configuration) : IBasketService
     {
         public async Task<CustomerBasketDto> GetcustomerBasketAsync(string basketId)
         {

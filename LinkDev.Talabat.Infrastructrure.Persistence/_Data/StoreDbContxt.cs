@@ -8,7 +8,7 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data
     {
         public StoreDbContxt(DbContextOptions<StoreDbContxt> option) : base(option) 
         {
-            
+            this.ChangeTracker.LazyLoadingEnabled = true;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

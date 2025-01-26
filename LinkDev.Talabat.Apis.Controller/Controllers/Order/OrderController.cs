@@ -1,11 +1,13 @@
 ﻿using LinkDev.Talabat.Apis.Controller.Controllers.BaseController;
 using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Core.Application.Abstraction.Order.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace LinkDev.Talabat.Apis.Controller.Controllers.Order
 {
+    [Authorize]
     public class OrderController(IServiceManager serviceManager) : ApiControllerBase
     {
         [HttpPost]

@@ -85,7 +85,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Order
 
         public async Task<IEnumerable<OrderToReturnDto>> GetOrderForUserAsync(string buyerEmail)
         {
-            var spec = new OrderSpec(buyerEmail);
+            var spec =  OrderSpec.BuyerEmail(buyerEmail);
             var orders = await uniteOfWork.GetRepoitery<Domain.Entities.Orders.Order, int>().GetWithSpecAllAsync(spec);
 
             return mapper.Map<IEnumerable<OrderToReturnDto>>(orders);

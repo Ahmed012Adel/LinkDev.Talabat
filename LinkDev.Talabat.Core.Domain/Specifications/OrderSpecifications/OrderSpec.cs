@@ -22,14 +22,6 @@ namespace LinkDev.Talabat.Core.Domain.Specifications.OrderSpecifications
 
         }
 
-        private protected override void AddIncludes()
-        {
-            base.AddIncludes();
-
-            Includes.Add(order => order.OrderItems);
-            Includes.Add(order => order.deliveryMethod!);
-        }
-
         public static OrderSpec BuyerEmail(string buyerEmail)
         {
             var spec = new OrderSpec(Order => Order.BuyerEmail == buyerEmail);
@@ -41,9 +33,17 @@ namespace LinkDev.Talabat.Core.Domain.Specifications.OrderSpecifications
 
         public static OrderSpec PaymentIntent(string paymentIntentId) 
         {
+            var spec = new OrderSpec(Order => Order.PaymentIntenedId == paymentIntentId);
+            spec.AddIncludes();
+            return spec;
+        }
 
-            return new OrderSpec(Order => Order.PaymentIntenedId == paymentIntentId);
+        private protected override void AddIncludes()
+        {
+            base.AddIncludes();
 
+            Includes.Add(order => order.OrderItems);
+            Includes.Add(order => order.deliveryMethod!);
         }
     }
 }

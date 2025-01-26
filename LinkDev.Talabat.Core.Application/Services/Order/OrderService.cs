@@ -10,7 +10,10 @@ using LinkDev.Talabat.Core.Domain.Specifications.OrderSpecifications;
 
 namespace LinkDev.Talabat.Core.Application.Services.Order
 {
-    internal class OrderService(IBasketService basketService, IUniteOfWork uniteOfWork, IMapper mapper , IPaymentService paymentService) : IOrdersService
+    internal class OrderService(IBasketService basketService,
+                                IUniteOfWork uniteOfWork,
+                                IMapper mapper ,
+                                IPaymentService paymentService) : IOrdersService
     {
         public async Task<OrderToReturnDto> CreateOrderAsync(string BuyerEmail, CreateOrderDto order)
         {
@@ -58,6 +61,8 @@ namespace LinkDev.Talabat.Core.Application.Services.Order
 
             var Address = mapper.Map<Address>(order.ShippingAddress);
 
+            var deliveryMethod = await uniteOfWork.GetRepoitery<DeliveryMethod , int>().GetAsync(order.DeliveryMethodId);
+
             // 5. createOrder
 
             var orderRepo = uniteOfWork.GetRepoitery<Domain.Entities.Orders.Order, int>();
@@ -72,23 +77,25 @@ namespace LinkDev.Talabat.Core.Application.Services.Order
                 await paymentService.CreateOrUpdatePaymentIntent(basket.Id);
             }
 
+            
             var OrderToCreateDto = new Domain.Entities.Orders.Order()
             {
                 BuyerEmail = BuyerEmail,
                 ShippingAddress = Address,
                 OrderItems = OrderItems,
                 SupTotal = subtotal,
+                deliveryMethod = deliveryMethod,
                 deliveryMethodId = order.DeliveryMethodId,
                 PaymentIntenedId = basket.PaymentIntentId!
                 
             };
 
-            await uniteOfWork.GetRepoitery<Domain.Entities.Orders.Order, int>().AddAsync(OrderToCreateDto);
+            await orderRepo.AddAsync(OrderToCreateDto);
             // 6. save to database
 
             var Created = await uniteOfWork.ComplateAsync() > 0;
 
-            if (!Created) throw new BadRequestException("something error occured");
+            if (!Created) throw new BadRequestException(Created.ToString());
 
             return mapper.Map<OrderToReturnDto>(OrderToCreateDto);
 

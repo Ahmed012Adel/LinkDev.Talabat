@@ -32,7 +32,7 @@ namespace LinkDev.Talabat.Infrastructrure.Persistence.Data.Repositeries
             //    if (typeof(TEntity) == typeof(Product))
             //        return (TEntity)(await dbContxt.Set<Product>().Where(P => P.Id.Equals(id)).Include(p => p.Category).Include(p => p.Brand).FirstOrDefaultAsync() as TEntity;
 
-            return await dbContxt.Set<TEntity>().FindAsync();
+            return await dbContxt.Set<TEntity>().FindAsync(id);
         }
 
         public async Task<IEnumerable<TEntity>> GetWithSpecAllAsync(ISpecification<TEntity, TKey> spec, bool withTracking = false)
